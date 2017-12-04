@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;TESTABLE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -46,6 +46,8 @@
     <Compile Include="BaseAZ.cs" />
     <Compile Include="CellValue.cs" />
     <Compile Include="ExcelMode.cs" />
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="Helpers\CellReference.cs" />
     <Compile Include="Helpers\SpreadsheetHelper.cs" />
     <Compile Include="Messages\Texts.Designer.cs">
       <AutoGen>True</AutoGen>

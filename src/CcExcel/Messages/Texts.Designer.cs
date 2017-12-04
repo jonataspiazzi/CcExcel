@@ -68,5 +68,50 @@ namespace CcExcel.Messages {
                 return ResourceManager.GetString("DefaultSheetName", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multiple sheets with same name or same id were found..
+        /// </summary>
+        internal static string MultipleSheetsWithSameNameOrSameIdWereFound {
+            get {
+                return ResourceManager.GetString("MultipleSheetsWithSameNameOrSameIdWereFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The excel file is probably corrupted..
+        /// </summary>
+        internal static string TheExcelFileIsProbablyCorrupted {
+            get {
+                return ResourceManager.GetString("TheExcelFileIsProbablyCorrupted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The parameter cellReference was not in a correct format..
+        /// </summary>
+        internal static string TheParameterCellReferenceWasNotInACorrectFormat {
+            get {
+                return ResourceManager.GetString("TheParameterCellReferenceWasNotInACorrectFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value &apos;{0}&apos; cannot be converted in {1}..
+        /// </summary>
+        internal static string TheValue0CannotBeConvertedIn1 {
+            get {
+                return ResourceManager.GetString("TheValue0CannotBeConvertedIn1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The worksheetPart was not found..
+        /// </summary>
+        internal static string TheWorksheetPartWasNotFound {
+            get {
+                return ResourceManager.GetString("TheWorksheetPartWasNotFound", resourceCulture);
+            }
+        }
     }
 }

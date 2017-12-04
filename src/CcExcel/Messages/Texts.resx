@@ -120,4 +120,19 @@
   <data name="DefaultSheetName" xml:space="preserve">
     <value>Sheet</value>
   </data>
+  <data name="MultipleSheetsWithSameNameOrSameIdWereFound" xml:space="preserve">
+    <value>Multiple sheets with same name or same id were found.</value>
+  </data>
+  <data name="TheExcelFileIsProbablyCorrupted" xml:space="preserve">
+    <value>The excel file is probably corrupted.</value>
+  </data>
+  <data name="TheParameterCellReferenceWasNotInACorrectFormat" xml:space="preserve">
+    <value>The parameter cellReference was not in a correct format.</value>
+  </data>
+  <data name="TheValue0CannotBeConvertedIn1" xml:space="preserve">
+    <value>The value '{0}' cannot be converted in {1}.</value>
+  </data>
+  <data name="TheWorksheetPartWasNotFound" xml:space="preserve">
+    <value>The worksheetPart was not found.</value>
+  </data>
 </root>
