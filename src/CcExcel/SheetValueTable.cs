@@ -8,9 +8,14 @@ namespace CcExcel
 {
     public class SheetValueTable
     {
-        private Sheet Owner;
+        internal Sheet Owner { get; }
 
-        public CellValue this[BaseAZ column, int line]
+        internal SheetValueTable(Sheet owner)
+        {
+            Owner = owner;
+        }
+
+        public ExcelValue this[BaseAZ column, int line]
         {
             get
             {
@@ -42,16 +47,16 @@ namespace CcExcel
             }
         }
 
-        public CellValue this[string column, int line]
+        public ExcelValue this[string column, int line]
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return this[BaseAZ.Parse(column), line]; }
+            set { this[BaseAZ.Parse(column), line] = value; }
         }
 
-        public CellValue this[int column, int line]
+        public ExcelValue this[int column, int line]
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return this[(BaseAZ)column, line]; }
+            set { this[(BaseAZ)column, line] = value; }
         }
     }
 }

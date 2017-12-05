@@ -104,9 +104,19 @@ namespace CcExcel
             return new BaseAZ(value);
         }
 
+        public static explicit operator BaseAZ(int value)
+        {
+            return new BaseAZ((uint)value);
+        }
+
         public static explicit operator uint(BaseAZ value)
         {
             return value._value;
+        }
+
+        public static explicit operator int(BaseAZ value)
+        {
+            return (int)value._value;
         }
 
         #endregion

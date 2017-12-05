@@ -5,8 +5,12 @@ using System.Text;
 
 namespace CcExcel
 {
-    class SheetStyleTable
+    public class SheetStyleTable
     {
+        internal SheetStyleTable(Sheet owner)
+        {
+        }
+
         public StyleId this[BaseAZ column, int line]
         {
             get { throw new NotImplementedException(); }

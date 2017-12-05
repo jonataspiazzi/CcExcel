@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseAZ.cs" />
-    <Compile Include="CellValue.cs" />
+    <Compile Include="ExcelValue.cs" />
     <Compile Include="ExcelMode.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Helpers\CellReference.cs" />

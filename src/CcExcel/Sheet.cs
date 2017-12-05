@@ -33,6 +33,8 @@ namespace CcExcel
 
         #region Non Public
 
+        private SheetValueTable _sheetValueTable;
+        private SheetStyleTable _sheetStyleTable;
         private string _inMemoryName;
         internal Excel Owner { get; }
         internal Spreadsheet.Sheet OpenXmlSheet { get; private set; }
@@ -64,12 +66,12 @@ namespace CcExcel
 
         public SheetValueTable Values
         {
-            get { throw new NotImplementedException(); }
+            get { return _sheetValueTable ?? (_sheetValueTable = new SheetValueTable(this)); }
         }
 
-        public SheetValueTable Styles
+        public SheetStyleTable Styles
         {
-            get { throw new NotImplementedException(); }
+            get { return _sheetStyleTable ?? (_sheetStyleTable = new SheetStyleTable(this)); }
         }
 
         #endregion
