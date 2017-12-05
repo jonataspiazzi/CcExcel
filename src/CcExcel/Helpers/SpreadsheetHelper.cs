@@ -34,16 +34,27 @@ namespace CcExcel.Helpers
             return document.WorkbookPart.Workbook;
         }
 
-        public static int GetMaxId(SpreadsheetDocument document)
+        public static SharedStringTable GetSharedString(SpreadsheetDocument document, bool createIfDoesntExists = false)
         {
-            return document
-                .WorkbookPart
-                ?.Workbook
-                ?.GetFirstChild<Sheets>()
-                ?.Elements<Spreadsheet.Sheet>()
-                ?.Select(s => (int)(uint)s.SheetId)
-                ?.OrderByDescending(o => o)
-                ?.FirstOrDefault() ?? 0;
+            var wbp = GetWorkbook(document, createIfDoesntExists)?.WorkbookPart;
+
+            if (wbp == null) return null;
+
+            // TODO: consider use GetPartsOfType<> https://msdn.microsoft.com/pt-br/library/office/cc861607.aspx
+            var sstp = wbp.SharedStringTablePart;
+
+            if (sstp == null)
+            {
+                if (!createIfDoesntExists) return null;
+
+                sstp = wbp.AddNewPart<SharedStringTablePart>();
+            }
+
+            if (sstp.SharedStringTable != null) return sstp.SharedStringTable;
+
+            if (!createIfDoesntExists) return null;
+
+            return sstp.SharedStringTable = new SharedStringTable();
         }
 
         public static Spreadsheet.Sheet GetSheet(SpreadsheetDocument document, string sheetName = null, int? sheetId = null, bool createIfDoesntExists = false)
@@ -240,6 +251,51 @@ namespace CcExcel.Helpers
             }
 
             return cell;
+        }
+
+        public static string GetValue(SpreadsheetDocument document, SheetData sheetData = null, BaseAZ? column = null, uint? line = null, Cell cell = null)
+        {
+            cell = cell ?? GetCell(sheetData, column.Value, line.Value);
+
+            if (cell?.DataType?.Value == CellValues.SharedString)
+            {
+                var sst = GetSharedString(document);
+
+                return sst.ElementAt(int.Parse(cell.InnerText)).InnerText;
+            }
+
+            return cell?.InnerText;
+        }
+
+        public static int GetMaxId(SpreadsheetDocument document)
+        {
+            return document
+                .WorkbookPart
+                ?.Workbook
+                ?.GetFirstChild<Sheets>()
+                ?.Elements<Spreadsheet.Sheet>()
+                ?.Select(s => (int)(uint)s.SheetId)
+                ?.OrderByDescending(o => o)
+                ?.FirstOrDefault() ?? 0;
+        }
+
+        public static int InsertInSharedString(SpreadsheetDocument document, string value)
+        {
+            var sst = GetSharedString(document, createIfDoesntExists: true);
+
+            var i = 0;
+
+            foreach (var item in sst.Elements<SharedStringItem>())
+            {
+                if (item.InnerText == value) return i;
+
+                i++;
+            }
+
+            sst.AppendChild(new SharedStringItem(new Text(value)));
+            sst.Save();
+
+            return i;
         }
     }
 }
