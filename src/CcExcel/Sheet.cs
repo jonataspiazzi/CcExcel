@@ -1,53 +1,64 @@
-﻿using CcExcel.Messages;
+﻿using CcExcel.Helpers;
+using CcExcel.Messages;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Spreadsheet = DocumentFormat.OpenXml.Spreadsheet;
 
 namespace CcExcel
 {
     public class Sheet
     {
-        #region Fields
-
-        internal Excel Owner { get; }
-        internal DocumentFormat.OpenXml.Spreadsheet.Sheet OpenXmlSheet { get; private set; }
-        private string _onMemoryName;
-
-        #endregion
-
         #region Constructors
 
         internal Sheet(Excel owner, int id)
         {
+            _inMemoryName = Texts.DefaultSheetName + id;
             Owner = owner;
             Id = id;
-            _onMemoryName = Texts.DefaultSheetName + Id;
         }
 
-        internal Sheet(Excel owner, DocumentFormat.OpenXml.Spreadsheet.Sheet openXmlSheet)
+        internal Sheet(Excel owner, Spreadsheet.Sheet sheet, SheetData sheetData)
         {
             Owner = owner;
-            OpenXmlSheet = openXmlSheet;
+            OpenXmlSheet = sheet;
+            OpenXmlSheetData = sheetData;
             Id = (int)(uint)OpenXmlSheet.SheetId;
-            Name = OpenXmlSheet.Name;
         }
 
         #endregion
 
-        #region Properties
+        #region Non Public
+
+        private string _inMemoryName;
+        internal Excel Owner { get; }
+        internal Spreadsheet.Sheet OpenXmlSheet { get; private set; }
+        internal SheetData OpenXmlSheetData { get; private set; }
+
+        internal void Consolidate()
+        {
+            if (OpenXmlSheetData != null) return;
+
+            OpenXmlSheet = SpreadsheetHelper.GetSheet(Owner.OpenXmlDocument, Name, Id, createIfDoesntExists: true);
+            OpenXmlSheetData = SpreadsheetHelper.GetSheetData(Owner.OpenXmlDocument, sheet: OpenXmlSheet);
+        }
+
+        #endregion
+
+        #region Public
 
         public int Id { get; }
 
         public string Name
         {
-            get { return OpenXmlSheet?.Name ?? _onMemoryName; }
+            get { return OpenXmlSheet?.Name ?? _inMemoryName; }
             set
             {
                 if (OpenXmlSheet != null) OpenXmlSheet.Name = value;
-                _onMemoryName = value;
+                _inMemoryName = value;
             }
         }
 
@@ -60,40 +71,6 @@ namespace CcExcel
         {
             get { throw new NotImplementedException(); }
         }
-
-        #endregion
-
-        #region Methods
-
-        internal void CreateSheet()
-        {
-            if (OpenXmlSheet != null) return;
-
-            var wsp = Owner.OpenXmlDocument.WorkbookPart.AddNewPart<WorksheetPart>();
-            wsp.Worksheet = new Worksheet(new SheetData());
-
-            var sheets = Owner.OpenXmlDocument.WorkbookPart.Workbook.Sheets;
-
-            if (sheets == null)
-            {
-                sheets = new Sheets();
-                Owner.OpenXmlDocument.WorkbookPart.Workbook.AppendChild(sheets);
-            }
-
-            var sheet = new DocumentFormat.OpenXml.Spreadsheet.Sheet
-            {
-                Id = Owner.OpenXmlDocument.WorkbookPart.GetIdOfPart(wsp),
-                SheetId = (uint)Id,
-                Name = Name
-            };
-
-            sheets.Append(sheet);
-        }
-
-        internal Cell GetCell(BaseAZ column, int line, bool createIfNull)
-        {
-            throw new NotImplementedException();
-        } 
 
         #endregion
     }

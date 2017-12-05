@@ -20,9 +20,22 @@ namespace CcExcel.Test
             var doc = SpreadsheetDocument.Open(GetType().Assembly
                 .GetManifestResourceStream("CcExcel.Test.Resources.AllTypes.xlsx"), false);
 
-            var sheet = SpreadsheetHelper.GetSheetData(doc, "Sheet1");
+            var sheetData = SpreadsheetHelper.GetSheetData(doc, "Sheet1");
 
-            Assert.IsNotNull(sheet);
+            Assert.IsNotNull(sheetData);
+        }
+
+        [TestMethod]
+        public void ShouldGetSheetDataInSteps()
+        {
+            var doc = SpreadsheetDocument.Open(GetType().Assembly
+                .GetManifestResourceStream("CcExcel.Test.Resources.AllTypes.xlsx"), false);
+
+            var sheet = SpreadsheetHelper.GetSheet(doc, "Sheet1");
+
+            var sheetData = SpreadsheetHelper.GetSheetData(doc, sheet: sheet);
+
+            Assert.IsNotNull(sheetData);
         }
 
         [TestMethod]
@@ -35,6 +48,17 @@ namespace CcExcel.Test
             var cell = SpreadsheetHelper.GetCell(sheetData, BaseAZ.Parse("B"), 2);
 
             Assert.IsNotNull(cell);
+        }
+
+        [TestMethod]
+        public void ShouldGetMaxId()
+        {
+            var doc = SpreadsheetDocument.Open(GetType().Assembly
+                .GetManifestResourceStream("CcExcel.Test.Resources.MultiTabs.xlsx"), false);
+
+            var value = SpreadsheetHelper.GetMaxId(doc);
+
+            Assert.AreEqual(3, value);
         }
 
         [TestMethod]

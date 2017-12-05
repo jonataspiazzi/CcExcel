@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml;
+﻿using CcExcel.Helpers;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System;
@@ -6,16 +7,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using OpenXmlSheet = DocumentFormat.OpenXml.Spreadsheet.Sheet;
+using Spreadsheet = DocumentFormat.OpenXml.Spreadsheet;
 
 namespace CcExcel
 {
     public class Excel : IDisposable
     {
-        #region Fields
+        #region Non Public
 
         private readonly Stream _stream;
-        private List<Sheet> _sheets;
+        private readonly bool _streamOwner;
+        private List<Sheet> _sheets = new List<Sheet>();
+
+        internal SpreadsheetDocument OpenXmlDocument { get; }
 
         #endregion
 
@@ -27,72 +31,70 @@ namespace CcExcel
             var fileAccess = mode == ExcelMode.OpenReadOnly ? FileAccess.Read : FileAccess.ReadWrite;
 
             _stream = new FileStream(fileName, fileMode, fileAccess);
+            _streamOwner = true;
 
-            CanWrite = mode != ExcelMode.OpenReadOnly;
+            IsEditable = mode != ExcelMode.OpenReadOnly;
 
             OpenXmlDocument = LoadDocument(mode);
-            _sheets = LoadSheets();
         }
 
         public Excel(Stream stream, ExcelMode mode)
         {
-            CanWrite = mode != ExcelMode.OpenReadOnly;
+            IsEditable = mode != ExcelMode.OpenReadOnly;
+
+            _stream = stream;
+            _streamOwner = false;
 
             OpenXmlDocument = LoadDocument(mode);
-            _sheets = LoadSheets();
         }
 
         private SpreadsheetDocument LoadDocument(ExcelMode mode)
         {
             var doc = mode == ExcelMode.Create
                 ? SpreadsheetDocument.Create(_stream, SpreadsheetDocumentType.Workbook, true)
-                : SpreadsheetDocument.Open(_stream, CanWrite);
+                : SpreadsheetDocument.Open(_stream, IsEditable);
 
-            if (mode != ExcelMode.Create) return doc;
-
-            doc.AddWorkbookPart();
-            doc.WorkbookPart.Workbook = new Workbook();
+            if (mode == ExcelMode.Create)
+            {
+                SpreadsheetHelper.GetWorkbook(doc, createIfDoesntExists: true);
+            }
 
             return doc;
         }
 
-        private List<Sheet> LoadSheets()
-        {
-            var sheets = OpenXmlDocument
-                .WorkbookPart
-                .Workbook
-                .GetFirstChild<Sheets>();
-
-            if (sheets == null) return new List<Sheet>();
-
-            return sheets
-                .Elements<OpenXmlSheet>()
-                .Select(s => new Sheet(this, s))
-                .ToList();
-        }
-
         #endregion
 
-        #region Properties
+        #region Public
 
-        internal SpreadsheetDocument OpenXmlDocument { get; }
-
-        public bool CanWrite { get; }
+        public bool IsEditable { get; }
 
         public Sheet this[string sheetName]
         {
             get
             {
-                var sheet = _sheets.FirstOrDefault(w => w.Name == sheetName);
+                var sheet = _sheets.FirstOrDefault(f => f.Name == sheetName);
 
-                if (sheet != null) return sheet;
+                var openXmlSheet = SpreadsheetHelper.GetSheet(OpenXmlDocument, sheetName, null, createIfDoesntExists: false);
+                var openXmlSheetData = SpreadsheetHelper.GetSheetData(OpenXmlDocument, sheet: openXmlSheet);
 
-                var id = _sheets.Count > 1 ? _sheets.Max(m => m.Id) + 1 : 1;
+                if (openXmlSheetData != null)
+                {
+                    sheet = new Sheet(this, openXmlSheet, openXmlSheetData);
+                }
+                else
+                {
+                    var maxInFile = SpreadsheetHelper.GetMaxId(OpenXmlDocument);
+                    var maxInMemory = _sheets.Any() ? _sheets.Max(m => m.Id) : 0;
 
-                sheet = new Sheet(this, id);
+                    var max = maxInFile > maxInMemory ? maxInFile : maxInMemory;
+
+                    sheet = new Sheet(this, max + 1)
+                    {
+                        Name = sheetName
+                    };
+                }
 
                 _sheets.Add(sheet);
-
                 return sheet;
             }
         }
@@ -101,12 +103,16 @@ namespace CcExcel
         {
             get
             {
-                var sheet = _sheets.FirstOrDefault(w => w.Id == sheetId);
+                var sheet = _sheets.FirstOrDefault(f => f.Id == sheetId);
 
-                sheet = new Sheet(this, sheetId);
+                var openXmlSheet = SpreadsheetHelper.GetSheet(OpenXmlDocument, null, sheetId, createIfDoesntExists: false);
+                var openXmlSheetData = SpreadsheetHelper.GetSheetData(OpenXmlDocument, sheet: openXmlSheet);
+
+                sheet = openXmlSheetData != null
+                    ? new Sheet(this, openXmlSheet, openXmlSheetData)
+                    : new Sheet(this, sheetId);
 
                 _sheets.Add(sheet);
-
                 return sheet;
             }
         }
@@ -117,16 +123,13 @@ namespace CcExcel
 
         public void Save()
         {
+            OpenXmlDocument.Save();
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
-        }
-
-        internal SharedStringTablePart GetSharedStringTable(bool createIfNull)
-        {
-            throw new NotImplementedException();
+            OpenXmlDocument.Dispose();
+            if (_streamOwner) _stream.Dispose();
         }
 
         #endregion

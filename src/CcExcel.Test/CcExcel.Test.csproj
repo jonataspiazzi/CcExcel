@@ -68,6 +68,7 @@
     <None Include="App.config" />
     <EmbeddedResource Include="Resources\AllTypes.xlsx" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="Resources\MultiTabs.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CcExcel\CcExcel.csproj">

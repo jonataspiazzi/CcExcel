@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Spreadsheet = DocumentFormat.OpenXml.Spreadsheet;
 
 namespace CcExcel.Helpers
 {
@@ -33,7 +34,19 @@ namespace CcExcel.Helpers
             return document.WorkbookPart.Workbook;
         }
 
-        public static SheetData GetSheetData(SpreadsheetDocument document, string sheetName = null, int? sheetId = null, bool createIfDoesntExists = false)
+        public static int GetMaxId(SpreadsheetDocument document)
+        {
+            return document
+                .WorkbookPart
+                ?.Workbook
+                ?.GetFirstChild<Sheets>()
+                ?.Elements<Spreadsheet.Sheet>()
+                ?.Select(s => (int)(uint)s.SheetId)
+                ?.OrderByDescending(o => o)
+                ?.FirstOrDefault() ?? 0;
+        }
+
+        public static Spreadsheet.Sheet GetSheet(SpreadsheetDocument document, string sheetName = null, int? sheetId = null, bool createIfDoesntExists = false)
         {
             var workbook = GetWorkbook(document, createIfDoesntExists);
 
@@ -54,7 +67,7 @@ namespace CcExcel.Helpers
             // Get or create ~/workbook.xml/workbook/sheets/sheet
 
             var sheetCollection = sheets
-                .Elements<DocumentFormat.OpenXml.Spreadsheet.Sheet>()
+                .Elements<Spreadsheet.Sheet>()
                 .Where(w => w.SheetId == sheetId || w.Name == sheetName)
                 .ToList();
 
@@ -64,25 +77,14 @@ namespace CcExcel.Helpers
             }
 
             var sheet = sheetCollection.FirstOrDefault();
-            SheetData sheetData = null;
-            WorksheetPart wsp;
 
             if (sheet == null)
             {
                 if (!createIfDoesntExists) return null;
 
-                wsp = document.WorkbookPart.AddNewPart<WorksheetPart>();
-                wsp.Worksheet = new Worksheet(sheetData = new SheetData());
-
                 if (sheetId == null)
                 {
-                    sheetId = sheets
-                        .Elements<DocumentFormat.OpenXml.Spreadsheet.Sheet>()
-                        .Select(s => (int)(uint)s.SheetId)
-                        .OrderByDescending(o => o)
-                        .FirstOrDefault();
-
-                    sheetId++;
+                    sheetId = GetMaxId(document) + 1;
                 }
 
                 if (string.IsNullOrEmpty(sheetName))
@@ -90,14 +92,33 @@ namespace CcExcel.Helpers
                     sheetName = Texts.DefaultSheetName + sheetId;
                 }
 
-                sheet = new DocumentFormat.OpenXml.Spreadsheet.Sheet
+                sheet = new Spreadsheet.Sheet
                 {
-                    Id = document.WorkbookPart.GetIdOfPart(wsp),
                     SheetId = (uint)sheetId,
                     Name = sheetName
                 };
 
                 sheets.Append(sheet);
+
+                return sheet;
+            }
+            else return sheet;
+        }
+
+        public static SheetData GetSheetData(SpreadsheetDocument document, string sheetName = null, int? sheetId = null, bool createIfDoesntExists = false, Spreadsheet.Sheet sheet = null)
+        {
+            sheet = sheet ?? GetSheet(document, sheetName, sheetId, createIfDoesntExists);
+            SheetData sheetData = null;
+            WorksheetPart wsp;
+
+            if (sheet == null) return null;
+
+            if (sheet.Id == null)
+            {
+                wsp = document.WorkbookPart.AddNewPart<WorksheetPart>();
+                wsp.Worksheet = new Worksheet(sheetData = new SheetData());
+
+                sheet.Id = document.WorkbookPart.GetIdOfPart(wsp);
             }
 
             // Get or create ~/worksheets/sheet0.xml/worksheet/sheetData
