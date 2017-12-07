@@ -70,6 +70,63 @@ namespace CcExcel.Test
         }
 
         [TestMethod]
+        public void ShouldCleanCellsIfSetEmpty()
+        {
+            using (var rs = GetType().Assembly.GetManifestResourceStream("CcExcel.Test.Resources.AllTypes.xlsx"))
+            using (var ms = new MemoryStream())
+            {
+                rs.CopyTo(ms);
+                ms.Position = 0;
+
+                using (var excel = new Excel(rs, ExcelMode.Open))
+                {
+                    excel["Sheet1"].Values["B", 2] = null;
+                    excel["Sheet1"].Values["B", 3] = null;
+                    excel["Sheet1"].Values["B", 4] = null;
+                    excel["Sheet1"].Values["B", 5] = null;
+                    excel["Sheet1"].Values["B", 6] = null;
+                    excel["Sheet1"].Values["B", 7] = null;
+                    excel["Sheet1"].Values["B", 8] = null;
+                    excel["Sheet1"].Values["B", 9] = null;
+                    excel["Sheet1"].Values["B", 10] = null;
+                    excel["Sheet1"].Values["B", 11] = null;
+                    excel["Sheet1"].Values["B", 12] = null;
+                    excel["Sheet1"].Values["B", 13] = null;
+                    excel["Sheet1"].Values["B", 14] = null;
+                    excel["Sheet1"].Values["B", 15] = null;
+                    excel["Sheet1"].Values["B", 16] = null;
+                    excel["Sheet1"].Values["B", 17] = null;
+                    excel["Sheet1"].Values["B", 18] = null;
+
+                    excel.Save();
+                }
+
+                ms.Position = 0;
+
+                using (var excel = new Excel(rs, ExcelMode.OpenReadOnly))
+                {
+                    Assert.IsNull(excel["Sheet1"].Values["B", 2].ToString());
+                    Assert.IsNull(excel["Sheet1"].Values["B", 3].ToString());
+                    Assert.IsNull(excel["Sheet1"].Values["B", 4].ToString());
+                    Assert.IsNull(excel["Sheet1"].Values["B", 5].ToString());
+                    Assert.IsNull(excel["Sheet1"].Values["B", 6].ToString());
+                    Assert.IsNull(excel["Sheet1"].Values["B", 7].ToString());
+                    Assert.IsNull(excel["Sheet1"].Values["B", 8].ToString());
+                    Assert.IsNull(excel["Sheet1"].Values["B", 9].ToString());
+                    Assert.IsNull(excel["Sheet1"].Values["B", 10].ToString());
+                    Assert.IsNull(excel["Sheet1"].Values["B", 11].ToString());
+                    Assert.IsNull(excel["Sheet1"].Values["B", 12].ToString());
+                    Assert.IsNull(excel["Sheet1"].Values["B", 13].ToString());
+                    Assert.IsNull(excel["Sheet1"].Values["B", 14].ToString());
+                    Assert.IsNull(excel["Sheet1"].Values["B", 15].ToString());
+                    Assert.IsNull(excel["Sheet1"].Values["B", 16].ToString());
+                    Assert.IsNull(excel["Sheet1"].Values["B", 17].ToString());
+                    Assert.IsNull(excel["Sheet1"].Values["B", 18].ToString());
+                }
+            }
+        }
+
+        [TestMethod]
         public void ShoudWriteAndReadACell()
         {
             using(var ms = new MemoryStream())

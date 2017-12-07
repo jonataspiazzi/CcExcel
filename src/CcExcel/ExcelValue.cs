@@ -22,6 +22,14 @@ namespace CcExcel
 
         #endregion
 
+        #region Public
+
+        public bool IsEmpty => string.IsNullOrEmpty(_value);
+
+        #endregion
+
+        #region Parses
+
         #region Boolean
 
         public static ExcelValue FromBoolean(bool value)
@@ -550,6 +558,8 @@ namespace CcExcel
         {
             return FromString(value);
         }
+
+        #endregion
 
         #endregion
     }

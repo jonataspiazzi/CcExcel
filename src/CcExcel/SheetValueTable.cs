@@ -28,7 +28,17 @@ namespace CcExcel
             }
             set
             {
-                throw new NotImplementedException();
+                if (value == null || value.IsEmpty)
+                {
+                    var cell = SpreadsheetHelper.GetCell(Owner.OpenXmlSheetData, column, (uint)line, createIfDoesntExists: false);
+
+                    cell.DataType = null;
+                    cell.CellValue = new CellValue(null);
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
             }
         }
 
