@@ -24,12 +24,12 @@ namespace CcExcel
 
         #region Boolean
 
-        public static implicit operator ExcelValue(bool value)
+        public static ExcelValue FromBoolean(bool value)
         {
             return new ExcelValue(value ? "1" : "0", false);
         }
 
-        public static implicit operator ExcelValue(bool? value)
+        public static ExcelValue FromNullableBoolean(bool? value)
         {
             return new ExcelValue(value == null ? null : value.Value ? "1" : "0", false);
         }
@@ -44,16 +44,26 @@ namespace CcExcel
             return string.IsNullOrWhiteSpace(_value) ? (bool?)null : ToBoolean();
         }
 
+        public static implicit operator ExcelValue(bool value)
+        {
+            return FromBoolean(value);
+        }
+
+        public static implicit operator ExcelValue(bool? value)
+        {
+            return FromNullableBoolean(value);
+        }
+
         #endregion
 
         #region Byte
 
-        public static implicit operator ExcelValue(byte value)
+        public static ExcelValue FromByte(byte value)
         {
             return new ExcelValue(value.ToString(_enUS), false);
         }
 
-        public static implicit operator ExcelValue(byte? value)
+        public static ExcelValue FromNullableByte(byte? value)
         {
             return new ExcelValue(value?.ToString(_enUS), false);
         }
@@ -68,16 +78,26 @@ namespace CcExcel
             return string.IsNullOrWhiteSpace(_value) ? (byte?)null : ToByte();
         }
 
+        public static implicit operator ExcelValue(byte value)
+        {
+            return FromByte(value);
+        }
+
+        public static implicit operator ExcelValue(byte? value)
+        {
+            return FromNullableByte(value);
+        }
+
         #endregion
 
         #region Char
 
-        public static implicit operator ExcelValue(char value)
+        public static ExcelValue FromChar(char value)
         {
             return new ExcelValue(value.ToString(_enUS), false);
         }
 
-        public static implicit operator ExcelValue(char? value)
+        public static ExcelValue FromNullableChar(char? value)
         {
             return new ExcelValue(value?.ToString(_enUS), false);
         }
@@ -92,16 +112,26 @@ namespace CcExcel
             return string.IsNullOrWhiteSpace(_value) ? (char?)null : ToChar();
         }
 
+        public static implicit operator ExcelValue(char value)
+        {
+            return FromChar(value);
+        }
+
+        public static implicit operator ExcelValue(char? value)
+        {
+            return FromNullableChar(value);
+        }
+
         #endregion
 
         #region Double
 
-        public static implicit operator ExcelValue(double value)
+        public static ExcelValue FromDouble(double value)
         {
             return new ExcelValue(value.ToString(_enUS), false);
         }
 
-        public static implicit operator ExcelValue(double? value)
+        public static ExcelValue FromNullableDouble(double? value)
         {
             return new ExcelValue(value?.ToString(_enUS), false);
         }
@@ -116,16 +146,26 @@ namespace CcExcel
             return string.IsNullOrWhiteSpace(_value) ? (double?)null : ToDouble();
         }
 
+        public static implicit operator ExcelValue(double value)
+        {
+            return FromDouble(value);
+        }
+
+        public static implicit operator ExcelValue(double? value)
+        {
+            return FromNullableDouble(value);
+        }
+
         #endregion
 
         #region Int16
 
-        public static implicit operator ExcelValue(short value)
+        public static ExcelValue FromInt16(short value)
         {
             return new ExcelValue(value.ToString(_enUS), false);
         }
 
-        public static implicit operator ExcelValue(short? value)
+        public static ExcelValue FromNullableInt16(short? value)
         {
             return new ExcelValue(value?.ToString(_enUS), false);
         }
@@ -140,16 +180,26 @@ namespace CcExcel
             return string.IsNullOrWhiteSpace(_value) ? (short?)null : ToInt16();
         }
 
+        public static implicit operator ExcelValue(short value)
+        {
+            return FromInt16(value);
+        }
+
+        public static implicit operator ExcelValue(short? value)
+        {
+            return FromNullableInt16(value);
+        }
+
         #endregion
 
         #region Int32
 
-        public static implicit operator ExcelValue(int value)
+        public static ExcelValue FromInt32(int value)
         {
             return new ExcelValue(value.ToString(_enUS), false);
         }
 
-        public static implicit operator ExcelValue(int? value)
+        public static ExcelValue FromNullableInt32(int? value)
         {
             return new ExcelValue(value?.ToString(_enUS), false);
         }
@@ -164,16 +214,26 @@ namespace CcExcel
             return string.IsNullOrWhiteSpace(_value) ? (int?)null : ToInt32();
         }
 
+        public static implicit operator ExcelValue(int value)
+        {
+            return FromInt32(value);
+        }
+
+        public static implicit operator ExcelValue(int? value)
+        {
+            return FromNullableInt32(value);
+        }
+
         #endregion
 
         #region Int64
 
-        public static implicit operator ExcelValue(long value)
+        public static ExcelValue FromInt64(long value)
         {
             return new ExcelValue(value.ToString(_enUS), false);
         }
 
-        public static implicit operator ExcelValue(long? value)
+        public static ExcelValue FromNullableInt64(long? value)
         {
             return new ExcelValue(value?.ToString(_enUS), false);
         }
@@ -188,16 +248,26 @@ namespace CcExcel
             return string.IsNullOrWhiteSpace(_value) ? (long?)null : ToInt64();
         }
 
+        public static implicit operator ExcelValue(long value)
+        {
+            return FromInt64(value);
+        }
+
+        public static implicit operator ExcelValue(long? value)
+        {
+            return FromNullableInt64(value);
+        }
+
         #endregion
 
         #region SByte
 
-        public static implicit operator ExcelValue(sbyte value)
+        public static ExcelValue FromSByte(sbyte value)
         {
             return new ExcelValue(value.ToString(_enUS), false);
         }
 
-        public static implicit operator ExcelValue(sbyte? value)
+        public static ExcelValue FromNullableSByte(sbyte? value)
         {
             return new ExcelValue(value?.ToString(_enUS), false);
         }
@@ -212,16 +282,26 @@ namespace CcExcel
             return string.IsNullOrWhiteSpace(_value) ? (sbyte?)null : ToSByte();
         }
 
+        public static implicit operator ExcelValue(sbyte value)
+        {
+            return FromSByte(value);
+        }
+
+        public static implicit operator ExcelValue(sbyte? value)
+        {
+            return FromNullableSByte(value);
+        }
+
         #endregion
 
         #region Single
 
-        public static implicit operator ExcelValue(float value)
+        public static ExcelValue FromSingle(float value)
         {
             return new ExcelValue(value.ToString(_enUS), false);
         }
 
-        public static implicit operator ExcelValue(float? value)
+        public static ExcelValue FromNullableSingle(float? value)
         {
             return new ExcelValue(value?.ToString(_enUS), false);
         }
@@ -236,16 +316,26 @@ namespace CcExcel
             return string.IsNullOrWhiteSpace(_value) ? (float?)null : ToSingle();
         }
 
+        public static implicit operator ExcelValue(float value)
+        {
+            return FromSingle(value);
+        }
+
+        public static implicit operator ExcelValue(float? value)
+        {
+            return FromNullableSingle(value);
+        }
+
         #endregion
 
         #region UInt16
 
-        public static implicit operator ExcelValue(ushort value)
+        public static ExcelValue FromUInt16(ushort value)
         {
             return new ExcelValue(value.ToString(_enUS), false);
         }
 
-        public static implicit operator ExcelValue(ushort? value)
+        public static ExcelValue FromNullableUInt16(ushort? value)
         {
             return new ExcelValue(value?.ToString(_enUS), false);
         }
@@ -260,16 +350,26 @@ namespace CcExcel
             return string.IsNullOrWhiteSpace(_value) ? (ushort?)null : ToUInt16();
         }
 
+        public static implicit operator ExcelValue(ushort value)
+        {
+            return FromUInt16(value);
+        }
+
+        public static implicit operator ExcelValue(ushort? value)
+        {
+            return FromNullableUInt16(value);
+        }
+
         #endregion
 
         #region UInt32
 
-        public static implicit operator ExcelValue(uint value)
+        public static ExcelValue FromUInt32(uint value)
         {
             return new ExcelValue(value.ToString(_enUS), false);
         }
 
-        public static implicit operator ExcelValue(uint? value)
+        public static ExcelValue FromNullableUInt32(uint? value)
         {
             return new ExcelValue(value?.ToString(_enUS), false);
         }
@@ -284,16 +384,26 @@ namespace CcExcel
             return string.IsNullOrWhiteSpace(_value) ? (uint?)null : ToUInt32();
         }
 
+        public static implicit operator ExcelValue(uint value)
+        {
+            return FromUInt32(value);
+        }
+
+        public static implicit operator ExcelValue(uint? value)
+        {
+            return FromNullableUInt32(value);
+        }
+
         #endregion
 
         #region UInt64
 
-        public static implicit operator ExcelValue(ulong value)
+        public static ExcelValue FromUInt64(ulong value)
         {
             return new ExcelValue(value.ToString(_enUS), false);
         }
 
-        public static implicit operator ExcelValue(ulong? value)
+        public static ExcelValue FromNullableUInt64(ulong? value)
         {
             return new ExcelValue(value?.ToString(_enUS), false);
         }
@@ -308,16 +418,26 @@ namespace CcExcel
             return string.IsNullOrWhiteSpace(_value) ? (ulong?)null : ToUInt64();
         }
 
+        public static implicit operator ExcelValue(ulong value)
+        {
+            return FromUInt64(value);
+        }
+
+        public static implicit operator ExcelValue(ulong? value)
+        {
+            return FromNullableUInt64(value);
+        }
+
         #endregion
 
         #region Decimal
 
-        public static implicit operator ExcelValue(decimal value)
+        public static ExcelValue FromDecimal(decimal value)
         {
             return new ExcelValue(value.ToString(_enUS), false);
         }
 
-        public static implicit operator ExcelValue(decimal? value)
+        public static ExcelValue FromNullableDecimal(decimal? value)
         {
             return new ExcelValue(value?.ToString(_enUS), false);
         }
@@ -332,16 +452,26 @@ namespace CcExcel
             return string.IsNullOrWhiteSpace(_value) ? (decimal?)null : ToDecimal();
         }
 
+        public static implicit operator ExcelValue(decimal value)
+        {
+            return FromDecimal(value);
+        }
+
+        public static implicit operator ExcelValue(decimal? value)
+        {
+            return FromNullableDecimal(value);
+        }
+
         #endregion
 
         #region DateTime
 
-        public static implicit operator ExcelValue(DateTime value)
+        public static ExcelValue FromDateTime(DateTime value)
         {
             return new ExcelValue(value.ToOADate().ToString(_enUS), false);
         }
 
-        public static implicit operator ExcelValue(DateTime? value)
+        public static ExcelValue FromNullableDateTime(DateTime? value)
         {
             return new ExcelValue(value?.ToOADate().ToString(_enUS), false);
         }
@@ -356,16 +486,26 @@ namespace CcExcel
             return string.IsNullOrWhiteSpace(_value) ? (DateTime?)null : ToDateTime();
         }
 
+        public static implicit operator ExcelValue(DateTime value)
+        {
+            return FromDateTime(value);
+        }
+
+        public static implicit operator ExcelValue(DateTime? value)
+        {
+            return FromNullableDateTime(value);
+        }
+
         #endregion
 
         #region TimeSpan
 
-        public static implicit operator ExcelValue(TimeSpan value)
+        public static ExcelValue FromTimeSpan(TimeSpan value)
         {
             return new ExcelValue((DateTime.FromOADate(0) + value).ToOADate().ToString(_enUS), false);
         }
 
-        public static implicit operator ExcelValue(TimeSpan? value)
+        public static ExcelValue FromNullableTimeSpan(TimeSpan? value)
         {
             return new ExcelValue((DateTime.FromOADate(0) + value)?.ToOADate().ToString(_enUS), false);
         }
@@ -382,18 +522,33 @@ namespace CcExcel
             return string.IsNullOrWhiteSpace(_value) ? (TimeSpan?)null : ToTimeSpan();
         }
 
+        public static implicit operator ExcelValue(TimeSpan value)
+        {
+            return FromTimeSpan(value);
+        }
+
+        public static implicit operator ExcelValue(TimeSpan? value)
+        {
+            return FromNullableTimeSpan(value);
+        }
+
         #endregion
 
         #region String
 
-        public static implicit operator ExcelValue(string value)
+        public static ExcelValue FromString(string value)
         {
-            return new ExcelValue(value.ToString(_enUS), false);
+            return new ExcelValue(value.ToString(_enUS), true);
         }
 
         public override string ToString()
         {
             return _value;
+        }
+
+        public static implicit operator ExcelValue(string value)
+        {
+            return FromString(value);
         }
 
         #endregion

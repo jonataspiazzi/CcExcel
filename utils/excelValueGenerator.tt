@@ -1,0 +1,34 @@
+        #region <#= type.Name #>
+
+        public static ExcelValue From<#= type.Name #>(<#= type.Alias #> value)
+        {
+            return new ExcelValue(value.ToString(_enUS), false);
+        }
+
+        public static ExcelValue FromNullable<#= type.Name #>(<#= type.Alias #>? value)
+        {
+            return new ExcelValue(value?.ToString(_enUS), false);
+        }
+
+        public <#= type.Alias #> To<#= type.Name #>()
+        {
+            return <#= type.Alias #>.Parse(_value, _enUS);
+        }
+
+        public <#= type.Alias #>? ToNullable<#= type.Name #>()
+        {
+            return string.IsNullOrWhiteSpace(_value) ? (<#= type.Alias #>?)null : To<#= type.Name #>();
+        }
+		
+		public static implicit operator ExcelValue(<#= type.Alias #> value)
+        {
+            return From<#= type.Name #>(value);
+        }
+
+        public static implicit operator ExcelValue(<#= type.Alias #>? value)
+        {
+            return FromNullable<#= type.Name #>(value);
+        }
+
+        #endregion
+		
