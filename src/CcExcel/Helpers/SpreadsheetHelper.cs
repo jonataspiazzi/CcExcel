@@ -255,6 +255,8 @@ namespace CcExcel.Helpers
 
         public static string GetValue(SpreadsheetDocument document, SheetData sheetData = null, BaseAZ? column = null, uint? line = null, Cell cell = null)
         {
+            if (cell == null && (column == null || line == null)) return null;
+
             cell = cell ?? GetCell(sheetData, column.Value, line.Value);
 
             if (cell?.DataType?.Value == CellValues.SharedString)

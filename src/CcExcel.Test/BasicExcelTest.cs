@@ -33,7 +33,7 @@ namespace CcExcel.Test
                 Assert.AreEqual("text2", (string)excel["Sheet1"].Values["B", 15]);
                 Assert.AreEqual("a", (string)excel["Sheet1"].Values["B", 16]);
                 Assert.AreEqual("1", (string)excel["Sheet1"].Values["B", 17]);
-                Assert.IsNull(excel["Sheet1"].Values["B", 18]);
+                Assert.IsNull((string)excel["Sheet1"].Values["B", 18]);
             }
         }
 

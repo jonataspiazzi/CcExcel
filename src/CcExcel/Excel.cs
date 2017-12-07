@@ -74,6 +74,8 @@ namespace CcExcel
             {
                 var sheet = _sheets.FirstOrDefault(f => f.Name == sheetName);
 
+                if (sheet != null) return sheet;
+
                 var openXmlSheet = SpreadsheetHelper.GetSheet(OpenXmlDocument, sheetName, null, createIfDoesntExists: false);
                 var openXmlSheetData = SpreadsheetHelper.GetSheetData(OpenXmlDocument, sheet: openXmlSheet);
 
