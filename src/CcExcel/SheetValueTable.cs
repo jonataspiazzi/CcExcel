@@ -1,4 +1,5 @@
 ﻿using CcExcel.Helpers;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
@@ -22,9 +23,9 @@ namespace CcExcel
             {
                 var cell = SpreadsheetHelper.GetCell(Owner.OpenXmlSheetData, column, (uint)line, createIfDoesntExists: false);
 
-                var value = SpreadsheetHelper.GetValue(Owner.Owner.OpenXmlDocument, Owner.OpenXmlSheetData, cell: cell);
+                var value = SpreadsheetHelper.GetValue(Owner.Owner.OpenXmlDocument, Owner.OpenXmlSheetData, cell);
 
-                return new ExcelValue(value, cell?.DataType?.Value == CellValues.SharedString);
+                return new ExcelValue(value, cell?.DataType?.Value);
             }
             set
             {
@@ -32,12 +33,13 @@ namespace CcExcel
                 {
                     var cell = SpreadsheetHelper.GetCell(Owner.OpenXmlSheetData, column, (uint)line, createIfDoesntExists: false);
 
-                    cell.DataType = null;
-                    cell.CellValue = new CellValue(null);
+                    cell?.Remove();
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    Owner.Consolidate();
+
+                    SpreadsheetHelper.SetValue(Owner.Owner.OpenXmlDocument, null, value.ToString(), value.ValueType, Owner.OpenXmlSheetData, column, (uint)line);
                 }
             }
         }

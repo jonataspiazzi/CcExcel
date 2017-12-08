@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -11,13 +12,14 @@ namespace CcExcel
         #region Non Public
 
         private string _value;
-        private bool _useStringTable;
         private static readonly CultureInfo _enUS = new CultureInfo("en-US");
 
-        internal ExcelValue(string value, bool useStringTable)
+        internal CellValues? ValueType { get; set; }
+
+        internal ExcelValue(string value, CellValues? valueType = null)
         {
             _value = value;
-            _useStringTable = useStringTable;
+            ValueType = valueType;
         }
 
         #endregion
@@ -34,12 +36,12 @@ namespace CcExcel
 
         public static ExcelValue FromBoolean(bool value)
         {
-            return new ExcelValue(value ? "1" : "0", false);
+            return new ExcelValue(value ? "1" : "0", CellValues.Boolean);
         }
 
         public static ExcelValue FromNullableBoolean(bool? value)
         {
-            return new ExcelValue(value == null ? null : value.Value ? "1" : "0", false);
+            return new ExcelValue(value == null ? null : value.Value ? "1" : "0", CellValues.Boolean);
         }
 
         public bool ToBoolean()
@@ -68,12 +70,12 @@ namespace CcExcel
 
         public static ExcelValue FromByte(byte value)
         {
-            return new ExcelValue(value.ToString(_enUS), false);
+            return new ExcelValue(value.ToString(_enUS));
         }
 
         public static ExcelValue FromNullableByte(byte? value)
         {
-            return new ExcelValue(value?.ToString(_enUS), false);
+            return new ExcelValue(value?.ToString(_enUS));
         }
 
         public byte ToByte()
@@ -102,12 +104,12 @@ namespace CcExcel
 
         public static ExcelValue FromChar(char value)
         {
-            return new ExcelValue(value.ToString(_enUS), false);
+            return new ExcelValue(value.ToString(_enUS), CellValues.SharedString);
         }
 
         public static ExcelValue FromNullableChar(char? value)
         {
-            return new ExcelValue(value?.ToString(_enUS), false);
+            return new ExcelValue(value?.ToString(_enUS), CellValues.SharedString);
         }
 
         public char ToChar()
@@ -136,12 +138,12 @@ namespace CcExcel
 
         public static ExcelValue FromDouble(double value)
         {
-            return new ExcelValue(value.ToString(_enUS), false);
+            return new ExcelValue(value.ToString(_enUS));
         }
 
         public static ExcelValue FromNullableDouble(double? value)
         {
-            return new ExcelValue(value?.ToString(_enUS), false);
+            return new ExcelValue(value?.ToString(_enUS));
         }
 
         public double ToDouble()
@@ -170,12 +172,12 @@ namespace CcExcel
 
         public static ExcelValue FromInt16(short value)
         {
-            return new ExcelValue(value.ToString(_enUS), false);
+            return new ExcelValue(value.ToString(_enUS));
         }
 
         public static ExcelValue FromNullableInt16(short? value)
         {
-            return new ExcelValue(value?.ToString(_enUS), false);
+            return new ExcelValue(value?.ToString(_enUS));
         }
 
         public short ToInt16()
@@ -204,12 +206,12 @@ namespace CcExcel
 
         public static ExcelValue FromInt32(int value)
         {
-            return new ExcelValue(value.ToString(_enUS), false);
+            return new ExcelValue(value.ToString(_enUS));
         }
 
         public static ExcelValue FromNullableInt32(int? value)
         {
-            return new ExcelValue(value?.ToString(_enUS), false);
+            return new ExcelValue(value?.ToString(_enUS));
         }
 
         public int ToInt32()
@@ -238,12 +240,12 @@ namespace CcExcel
 
         public static ExcelValue FromInt64(long value)
         {
-            return new ExcelValue(value.ToString(_enUS), false);
+            return new ExcelValue(value.ToString(_enUS));
         }
 
         public static ExcelValue FromNullableInt64(long? value)
         {
-            return new ExcelValue(value?.ToString(_enUS), false);
+            return new ExcelValue(value?.ToString(_enUS));
         }
 
         public long ToInt64()
@@ -272,12 +274,12 @@ namespace CcExcel
 
         public static ExcelValue FromSByte(sbyte value)
         {
-            return new ExcelValue(value.ToString(_enUS), false);
+            return new ExcelValue(value.ToString(_enUS));
         }
 
         public static ExcelValue FromNullableSByte(sbyte? value)
         {
-            return new ExcelValue(value?.ToString(_enUS), false);
+            return new ExcelValue(value?.ToString(_enUS));
         }
 
         public sbyte ToSByte()
@@ -306,12 +308,12 @@ namespace CcExcel
 
         public static ExcelValue FromSingle(float value)
         {
-            return new ExcelValue(value.ToString(_enUS), false);
+            return new ExcelValue(value.ToString(_enUS));
         }
 
         public static ExcelValue FromNullableSingle(float? value)
         {
-            return new ExcelValue(value?.ToString(_enUS), false);
+            return new ExcelValue(value?.ToString(_enUS));
         }
 
         public float ToSingle()
@@ -340,12 +342,12 @@ namespace CcExcel
 
         public static ExcelValue FromUInt16(ushort value)
         {
-            return new ExcelValue(value.ToString(_enUS), false);
+            return new ExcelValue(value.ToString(_enUS));
         }
 
         public static ExcelValue FromNullableUInt16(ushort? value)
         {
-            return new ExcelValue(value?.ToString(_enUS), false);
+            return new ExcelValue(value?.ToString(_enUS));
         }
 
         public ushort ToUInt16()
@@ -374,12 +376,12 @@ namespace CcExcel
 
         public static ExcelValue FromUInt32(uint value)
         {
-            return new ExcelValue(value.ToString(_enUS), false);
+            return new ExcelValue(value.ToString(_enUS));
         }
 
         public static ExcelValue FromNullableUInt32(uint? value)
         {
-            return new ExcelValue(value?.ToString(_enUS), false);
+            return new ExcelValue(value?.ToString(_enUS));
         }
 
         public uint ToUInt32()
@@ -408,12 +410,12 @@ namespace CcExcel
 
         public static ExcelValue FromUInt64(ulong value)
         {
-            return new ExcelValue(value.ToString(_enUS), false);
+            return new ExcelValue(value.ToString(_enUS));
         }
 
         public static ExcelValue FromNullableUInt64(ulong? value)
         {
-            return new ExcelValue(value?.ToString(_enUS), false);
+            return new ExcelValue(value?.ToString(_enUS));
         }
 
         public ulong ToUInt64()
@@ -442,12 +444,12 @@ namespace CcExcel
 
         public static ExcelValue FromDecimal(decimal value)
         {
-            return new ExcelValue(value.ToString(_enUS), false);
+            return new ExcelValue(value.ToString(_enUS));
         }
 
         public static ExcelValue FromNullableDecimal(decimal? value)
         {
-            return new ExcelValue(value?.ToString(_enUS), false);
+            return new ExcelValue(value?.ToString(_enUS));
         }
 
         public decimal ToDecimal()
@@ -476,12 +478,12 @@ namespace CcExcel
 
         public static ExcelValue FromDateTime(DateTime value)
         {
-            return new ExcelValue(value.ToOADate().ToString(_enUS), false);
+            return new ExcelValue(value.ToOADate().ToString(_enUS));
         }
 
         public static ExcelValue FromNullableDateTime(DateTime? value)
         {
-            return new ExcelValue(value?.ToOADate().ToString(_enUS), false);
+            return new ExcelValue(value?.ToOADate().ToString(_enUS));
         }
 
         public DateTime ToDateTime()
@@ -510,12 +512,12 @@ namespace CcExcel
 
         public static ExcelValue FromTimeSpan(TimeSpan value)
         {
-            return new ExcelValue((DateTime.FromOADate(0) + value).ToOADate().ToString(_enUS), false);
+            return new ExcelValue((DateTime.FromOADate(0) + value).ToOADate().ToString(_enUS));
         }
 
         public static ExcelValue FromNullableTimeSpan(TimeSpan? value)
         {
-            return new ExcelValue((DateTime.FromOADate(0) + value)?.ToOADate().ToString(_enUS), false);
+            return new ExcelValue((DateTime.FromOADate(0) + value)?.ToOADate().ToString(_enUS));
         }
 
         public TimeSpan ToTimeSpan()
@@ -546,7 +548,7 @@ namespace CcExcel
 
         public static ExcelValue FromString(string value)
         {
-            return new ExcelValue(value.ToString(_enUS), true);
+            return new ExcelValue(value.ToString(_enUS), CellValues.SharedString);
         }
 
         public override string ToString()

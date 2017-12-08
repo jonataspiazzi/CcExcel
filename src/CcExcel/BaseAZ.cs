@@ -56,31 +56,20 @@ namespace CcExcel
 
         public override string ToString()
         {
-            var array = new LinkedList<uint>();
-            var myNumber = _value;
+            int dividend = (int)_value;
+            string columnName = String.Empty;
+            int module;
 
-            while (myNumber > 26)
+            while (dividend > 0)
             {
-                var value = myNumber % 26;
-
-                if (value == 0)
-                {
-                    myNumber = myNumber / 26 - 1;
-                    array.AddFirst(26);
-                }
-                else
-                {
-                    myNumber /= 26;
-                    array.AddFirst(value);
-                }
+                module = (dividend - 1) % 26;
+                columnName = Convert.ToChar(65 + module).ToString() + columnName;
+                dividend = (int)((dividend - module) / 26);
             }
 
-            if (myNumber > 0)
-            {
-                array.AddFirst(myNumber);
-            }
+            return columnName;
 
-            return new string(array.Select(s => (char)('A' + s - 1)).ToArray());
+            // from https://stackoverflow.com/a/182924/1233788
         }
 
         public override int GetHashCode()

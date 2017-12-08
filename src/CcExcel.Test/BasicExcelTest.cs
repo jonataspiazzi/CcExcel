@@ -78,7 +78,7 @@ namespace CcExcel.Test
                 rs.CopyTo(ms);
                 ms.Position = 0;
 
-                using (var excel = new Excel(rs, ExcelMode.Open))
+                using (var excel = new Excel(ms, ExcelMode.Open))
                 {
                     excel["Sheet1"].Values["B", 2] = null;
                     excel["Sheet1"].Values["B", 3] = null;
@@ -103,7 +103,7 @@ namespace CcExcel.Test
 
                 ms.Position = 0;
 
-                using (var excel = new Excel(rs, ExcelMode.OpenReadOnly))
+                using (var excel = new Excel(ms, ExcelMode.OpenReadOnly))
                 {
                     Assert.IsNull(excel["Sheet1"].Values["B", 2].ToString());
                     Assert.IsNull(excel["Sheet1"].Values["B", 3].ToString());
@@ -123,6 +123,20 @@ namespace CcExcel.Test
                     Assert.IsNull(excel["Sheet1"].Values["B", 17].ToString());
                     Assert.IsNull(excel["Sheet1"].Values["B", 18].ToString());
                 }
+
+                DumpGeneratedExcelFiles.Dump(ms);
+            }
+        }
+
+        public void ShouldGetNullIfSheetDoesntExists()
+        {
+            using (var ms = new MemoryStream())
+            using (var excel = new Excel(ms, ExcelMode.Open))
+            {
+                Assert.IsNull(excel["Sheet1"].Values["B", 2]);
+                Assert.IsNull(excel["Sheet1"].Values["D", 2]);
+                Assert.IsNull(excel["Sheet1"].Values["B", 4]);
+                Assert.IsNull(excel["Sheet1"].Values["D", 4]);
             }
         }
 

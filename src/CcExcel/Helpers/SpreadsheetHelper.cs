@@ -155,7 +155,7 @@ namespace CcExcel.Helpers
 
         public static Row GetRow(SheetData sheetData, uint line, bool createIfDoesntExists = false)
         {
-            var row = sheetData.Elements<Row>().FirstOrDefault(r => r.RowIndex == line);
+            var row = sheetData?.Elements<Row>().FirstOrDefault(r => r.RowIndex == line);
 
             // Se existir a linha retorna.
             if (row != null)
@@ -253,9 +253,9 @@ namespace CcExcel.Helpers
             return cell;
         }
 
-        public static string GetValue(SpreadsheetDocument document, SheetData sheetData = null, BaseAZ? column = null, uint? line = null, Cell cell = null)
+        public static string GetValue(SpreadsheetDocument document, SheetData sheetData, Cell cell, BaseAZ? column = null, uint? line = null)
         {
-            if (cell == null && (column == null || line == null)) return null;
+            if (cell == null && (sheetData == null || column == null || line == null)) return null;
 
             cell = cell ?? GetCell(sheetData, column.Value, line.Value);
 
@@ -298,6 +298,29 @@ namespace CcExcel.Helpers
             sst.Save();
 
             return i;
+        }
+        
+        public static void SetValue(SpreadsheetDocument document, Cell cell, string value, CellValues? type, SheetData sheetData = null, BaseAZ? column = null, uint? line = null)
+        {
+            if (cell == null && (sheetData == null || column == null || line == null))
+            {
+                throw new ArgumentNullException("cell");
+            }
+
+            cell = cell ?? GetCell(sheetData, column.Value, line.Value, createIfDoesntExists: true);
+
+            if (type == CellValues.SharedString)
+            {
+                var index = InsertInSharedString(document, value);
+
+                cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+                cell.CellValue = new CellValue(index.ToString());
+
+                return;
+            }
+
+            cell.DataType = type != null ? new EnumValue<CellValues>(type.Value) : null;
+            cell.CellValue = new CellValue(value);
         }
     }
 }
