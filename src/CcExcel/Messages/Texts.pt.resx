@@ -120,6 +120,9 @@
   <data name="DefaultSheetName" xml:space="preserve">
     <value>Plan</value>
   </data>
+  <data name="EmptyValueCannotBeConvertedTo0" xml:space="preserve">
+    <value>O valor atual é vazio. Valores vazios não podem ser convertidos em '{0}'.</value>
+  </data>
   <data name="MultipleSheetsWithSameNameOrSameIdWereFound" xml:space="preserve">
     <value>Foram encontradas várias folhas com o mesmo nome ou id.</value>
   </data>

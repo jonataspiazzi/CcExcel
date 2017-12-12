@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
+﻿using CcExcel.Messages;
+using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -46,6 +47,8 @@ namespace CcExcel
 
         public bool ToBoolean()
         {
+            if (string.IsNullOrWhiteSpace(_value)) throw new EmptyValueException(string.Format(Texts.EmptyValueCannotBeConvertedTo0, nameof(Boolean)));
+
             return _value == "1" ? true : _value == "0" ? false : bool.Parse(_value);
         }
 
@@ -80,6 +83,8 @@ namespace CcExcel
 
         public byte ToByte()
         {
+            if (string.IsNullOrWhiteSpace(_value)) throw new EmptyValueException(string.Format(Texts.EmptyValueCannotBeConvertedTo0, nameof(Byte)));
+
             return byte.Parse(_value, _enUS);
         }
 
@@ -114,6 +119,8 @@ namespace CcExcel
 
         public char ToChar()
         {
+            if (string.IsNullOrWhiteSpace(_value)) throw new EmptyValueException(string.Format(Texts.EmptyValueCannotBeConvertedTo0, nameof(Char)));
+
             return char.Parse(_value);
         }
 
@@ -148,6 +155,8 @@ namespace CcExcel
 
         public double ToDouble()
         {
+            if (string.IsNullOrWhiteSpace(_value)) throw new EmptyValueException(string.Format(Texts.EmptyValueCannotBeConvertedTo0, nameof(Double)));
+
             return double.Parse(_value, _enUS);
         }
 
@@ -182,6 +191,8 @@ namespace CcExcel
 
         public short ToInt16()
         {
+            if (string.IsNullOrWhiteSpace(_value)) throw new EmptyValueException(string.Format(Texts.EmptyValueCannotBeConvertedTo0, nameof(Int16)));
+
             return short.Parse(_value, _enUS);
         }
 
@@ -216,6 +227,8 @@ namespace CcExcel
 
         public int ToInt32()
         {
+            if (string.IsNullOrWhiteSpace(_value)) throw new EmptyValueException(string.Format(Texts.EmptyValueCannotBeConvertedTo0, nameof(Int32)));
+
             return int.Parse(_value, _enUS);
         }
 
@@ -250,6 +263,8 @@ namespace CcExcel
 
         public long ToInt64()
         {
+            if (string.IsNullOrWhiteSpace(_value)) throw new EmptyValueException(string.Format(Texts.EmptyValueCannotBeConvertedTo0, nameof(Int64)));
+
             return long.Parse(_value, _enUS);
         }
 
@@ -284,6 +299,8 @@ namespace CcExcel
 
         public sbyte ToSByte()
         {
+            if (string.IsNullOrWhiteSpace(_value)) throw new EmptyValueException(string.Format(Texts.EmptyValueCannotBeConvertedTo0, nameof(SByte)));
+
             return sbyte.Parse(_value, _enUS);
         }
 
@@ -318,6 +335,8 @@ namespace CcExcel
 
         public float ToSingle()
         {
+            if (string.IsNullOrWhiteSpace(_value)) throw new EmptyValueException(string.Format(Texts.EmptyValueCannotBeConvertedTo0, nameof(Single)));
+
             return float.Parse(_value, _enUS);
         }
 
@@ -352,6 +371,8 @@ namespace CcExcel
 
         public ushort ToUInt16()
         {
+            if (string.IsNullOrWhiteSpace(_value)) throw new EmptyValueException(string.Format(Texts.EmptyValueCannotBeConvertedTo0, nameof(UInt16)));
+
             return ushort.Parse(_value, _enUS);
         }
 
@@ -386,6 +407,8 @@ namespace CcExcel
 
         public uint ToUInt32()
         {
+            if (string.IsNullOrWhiteSpace(_value)) throw new EmptyValueException(string.Format(Texts.EmptyValueCannotBeConvertedTo0, nameof(Int32)));
+
             return uint.Parse(_value, _enUS);
         }
 
@@ -420,6 +443,8 @@ namespace CcExcel
 
         public ulong ToUInt64()
         {
+            if (string.IsNullOrWhiteSpace(_value)) throw new EmptyValueException(string.Format(Texts.EmptyValueCannotBeConvertedTo0, nameof(Int64)));
+
             return ulong.Parse(_value, _enUS);
         }
 
@@ -454,6 +479,8 @@ namespace CcExcel
 
         public decimal ToDecimal()
         {
+            if (string.IsNullOrWhiteSpace(_value)) throw new EmptyValueException(string.Format(Texts.EmptyValueCannotBeConvertedTo0, nameof(Decimal)));
+
             return decimal.Parse(_value, _enUS);
         }
 
@@ -488,6 +515,8 @@ namespace CcExcel
 
         public DateTime ToDateTime()
         {
+            if (string.IsNullOrWhiteSpace(_value)) throw new EmptyValueException(string.Format(Texts.EmptyValueCannotBeConvertedTo0, nameof(DateTime)));
+
             return DateTime.FromOADate(double.Parse(_value, _enUS));
         }
 
@@ -522,6 +551,8 @@ namespace CcExcel
 
         public TimeSpan ToTimeSpan()
         {
+            if (string.IsNullOrWhiteSpace(_value)) throw new EmptyValueException(string.Format(Texts.EmptyValueCannotBeConvertedTo0, nameof(TimeSpan)));
+
             var date = DateTime.FromOADate(double.Parse(_value, _enUS));
 
             return date - date.Date;

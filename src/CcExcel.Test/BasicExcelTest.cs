@@ -60,12 +60,49 @@ namespace CcExcel.Test
                 Assert.AreEqual("text2", excel["Sheet1"].Values["B", 15].ToString());
                 Assert.AreEqual('a', excel["Sheet1"].Values["B", 16].ToChar());
                 Assert.AreEqual(true, excel["Sheet1"].Values["B", 17].ToBoolean());
-                Assert.IsNull(excel["Sheet1"].Values["B", 18].ToNullableBoolean());
-                Assert.IsNull(excel["Sheet1"].Values["B", 18].ToNullableInt32());
-                Assert.IsNull(excel["Sheet1"].Values["B", 18].ToNullableDouble());
-                Assert.IsNull(excel["Sheet1"].Values["B", 18].ToNullableDecimal());
-                Assert.IsNull(excel["Sheet1"].Values["B", 18].ToNullableDateTime());
-                Assert.IsNull(excel["Sheet1"].Values["B", 18].ToNullableTimeSpan());
+            }
+        }
+
+        [TestMethod]
+        public void ShouldHandleEmptyCells()
+        {
+            using (var rs = GetType().Assembly.GetManifestResourceStream("CcExcel.Test.Resources.AllTypes.xlsx"))
+            using (var excel = new Excel(rs, ExcelMode.OpenReadOnly))
+            {
+                var sheet = excel["Sheet1"];
+
+                Assert.IsNull(sheet.Values["B", 18].ToNullableBoolean());
+                Assert.IsNull(sheet.Values["B", 18].ToNullableByte());
+                Assert.IsNull(sheet.Values["B", 18].ToNullableChar());
+                Assert.IsNull(sheet.Values["B", 18].ToNullableDouble());
+                Assert.IsNull(sheet.Values["B", 18].ToNullableInt16());
+                Assert.IsNull(sheet.Values["B", 18].ToNullableInt32());
+                Assert.IsNull(sheet.Values["B", 18].ToNullableInt64());
+                Assert.IsNull(sheet.Values["B", 18].ToNullableSByte());
+                Assert.IsNull(sheet.Values["B", 18].ToNullableSingle());
+                Assert.IsNull(sheet.Values["B", 18].ToNullableUInt16());
+                Assert.IsNull(sheet.Values["B", 18].ToNullableUInt32());
+                Assert.IsNull(sheet.Values["B", 18].ToNullableUInt64());
+                Assert.IsNull(sheet.Values["B", 18].ToNullableDecimal());
+                Assert.IsNull(sheet.Values["B", 18].ToNullableDateTime());
+                Assert.IsNull(sheet.Values["B", 18].ToNullableTimeSpan());
+                Assert.IsNull(sheet.Values["B", 18].ToString());
+
+                Assert.ThrowsException<EmptyValueException>(() => sheet.Values["B", 18].ToBoolean());
+                Assert.ThrowsException<EmptyValueException>(() => sheet.Values["B", 18].ToByte());
+                Assert.ThrowsException<EmptyValueException>(() => sheet.Values["B", 18].ToChar());
+                Assert.ThrowsException<EmptyValueException>(() => sheet.Values["B", 18].ToDouble());
+                Assert.ThrowsException<EmptyValueException>(() => sheet.Values["B", 18].ToInt16());
+                Assert.ThrowsException<EmptyValueException>(() => sheet.Values["B", 18].ToInt32());
+                Assert.ThrowsException<EmptyValueException>(() => sheet.Values["B", 18].ToInt64());
+                Assert.ThrowsException<EmptyValueException>(() => sheet.Values["B", 18].ToSByte());
+                Assert.ThrowsException<EmptyValueException>(() => sheet.Values["B", 18].ToSingle());
+                Assert.ThrowsException<EmptyValueException>(() => sheet.Values["B", 18].ToUInt16());
+                Assert.ThrowsException<EmptyValueException>(() => sheet.Values["B", 18].ToUInt32());
+                Assert.ThrowsException<EmptyValueException>(() => sheet.Values["B", 18].ToUInt64());
+                Assert.ThrowsException<EmptyValueException>(() => sheet.Values["B", 18].ToDecimal());
+                Assert.ThrowsException<EmptyValueException>(() => sheet.Values["B", 18].ToDateTime());
+                Assert.ThrowsException<EmptyValueException>(() => sheet.Values["B", 18].ToTimeSpan());
             }
         }
 

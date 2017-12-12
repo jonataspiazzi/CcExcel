@@ -120,6 +120,9 @@
   <data name="DefaultSheetName" xml:space="preserve">
     <value>Sheet</value>
   </data>
+  <data name="EmptyValueCannotBeConvertedTo0" xml:space="preserve">
+    <value>The current value is empty. Empty values cannot be converted to '{0}'.</value>
+  </data>
   <data name="MultipleSheetsWithSameNameOrSameIdWereFound" xml:space="preserve">
     <value>Multiple sheets with same name or same id were found.</value>
   </data>

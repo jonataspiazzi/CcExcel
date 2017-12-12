@@ -15,4 +15,16 @@ namespace CcExcel
           System.Runtime.Serialization.SerializationInfo info,
           System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
+
+
+    [Serializable]
+    public class EmptyValueException : Exception
+    {
+        public EmptyValueException() { }
+        public EmptyValueException(string message) : base(message) { }
+        public EmptyValueException(string message, Exception inner) : base(message, inner) { }
+        protected EmptyValueException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
 }
