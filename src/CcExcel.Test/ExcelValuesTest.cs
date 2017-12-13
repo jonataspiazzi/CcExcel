@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace CcExcel.Test
 {
     [TestClass]
-    public class BasicExcelTest
+    public class ExcelValuesTest
     {
         [TestMethod]
         public void ShouldReadCellsAsString()
@@ -113,7 +113,6 @@ namespace CcExcel.Test
             using (var ms = new MemoryStream())
             {
                 rs.CopyTo(ms);
-                ms.Position = 0;
 
                 using (var excel = new Excel(ms, ExcelMode.Open))
                 {
@@ -137,8 +136,6 @@ namespace CcExcel.Test
 
                     excel.Save();
                 }
-
-                ms.Position = 0;
 
                 using (var excel = new Excel(ms, ExcelMode.OpenReadOnly))
                 {
@@ -165,15 +162,16 @@ namespace CcExcel.Test
             }
         }
 
+        [TestMethod]
         public void ShouldGetNullIfSheetDoesntExists()
         {
             using (var ms = new MemoryStream())
-            using (var excel = new Excel(ms, ExcelMode.Open))
+            using (var excel = new Excel(ms, ExcelMode.Create))
             {
-                Assert.IsNull(excel["Sheet1"].Values["B", 2]);
-                Assert.IsNull(excel["Sheet1"].Values["D", 2]);
-                Assert.IsNull(excel["Sheet1"].Values["B", 4]);
-                Assert.IsNull(excel["Sheet1"].Values["D", 4]);
+                Assert.IsTrue(excel["Sheet1"].Values["B", 2].IsEmpty);
+                Assert.IsTrue(excel["Sheet1"].Values["D", 2].IsEmpty);
+                Assert.IsTrue(excel["Sheet1"].Values["B", 4].IsEmpty);
+                Assert.IsTrue(excel["Sheet1"].Values["D", 4].IsEmpty);
             }
         }
 
@@ -188,8 +186,6 @@ namespace CcExcel.Test
 
                     excel.Save();
                 }
-
-                ms.Position = 0;
 
                 using (var excel = new Excel(ms, ExcelMode.OpenReadOnly))
                 {

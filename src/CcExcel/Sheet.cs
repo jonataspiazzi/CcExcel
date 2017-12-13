@@ -37,8 +37,8 @@ namespace CcExcel
         private SheetStyleTable _sheetStyleTable;
         private string _inMemoryName;
         internal Excel Owner { get; }
-        internal Spreadsheet.Sheet OpenXmlSheet { get; private set; }
-        internal SheetData OpenXmlSheetData { get; private set; }
+        public Spreadsheet.Sheet OpenXmlSheet { get; private set; }
+        public SheetData OpenXmlSheetData { get; private set; }
 
         internal void Consolidate()
         {
@@ -72,6 +72,10 @@ namespace CcExcel
         public SheetStyleTable Styles
         {
             get { return _sheetStyleTable ?? (_sheetStyleTable = new SheetStyleTable(this)); }
+        }
+
+        public void Remove()
+        {
         }
 
         #endregion

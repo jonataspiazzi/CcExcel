@@ -119,7 +119,6 @@ namespace CcExcel.Test
 
                     doc.Save();
                     doc.Dispose();
-                    ms.Position = 0;
                 }
 
                 using (var doc = SpreadsheetDocument.Open(ms, true))
@@ -165,7 +164,6 @@ namespace CcExcel.Test
 
                     doc.Save();
                     doc.Dispose();
-                    ms.Position = 0;
                 }
 
                 using (var doc = SpreadsheetDocument.Open(ms, true))
@@ -196,7 +194,6 @@ namespace CcExcel.Test
             using (var ms = new MemoryStream())
             {
                 rs.CopyTo(ms);
-                ms.Position = 0;
 
                 var doc = SpreadsheetDocument.Open(ms, true);
 
@@ -238,7 +235,6 @@ namespace CcExcel.Test
 
                     doc.Save();
                     doc.Dispose();
-                    ms.Position = 0;
                 }
 
                 using (var doc = SpreadsheetDocument.Open(ms, true))

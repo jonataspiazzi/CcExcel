@@ -19,7 +19,7 @@ namespace CcExcel
         private readonly bool _streamOwner;
         private List<Sheet> _sheets = new List<Sheet>();
 
-        internal SpreadsheetDocument OpenXmlDocument { get; }
+        public SpreadsheetDocument OpenXmlDocument { get; }
 
         #endregion
 
