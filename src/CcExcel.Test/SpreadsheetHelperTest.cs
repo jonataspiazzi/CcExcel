@@ -250,8 +250,31 @@ namespace CcExcel.Test
                     Assert.AreEqual("1", SpreadsheetHelper.GetValue(doc, sheetData, null, BaseAZ.Parse("A"), 1));
                     Assert.AreEqual("0", SpreadsheetHelper.GetValue(doc, sheetData, null, BaseAZ.Parse("C"), 1));
                     Assert.AreEqual("info", SpreadsheetHelper.GetValue(doc, sheetData, null, BaseAZ.Parse("E"), 1));
+                }
 
-                    doc.Dispose();
+                DumpGeneratedExcelFiles.Dump(ms);
+            }
+        }
+
+        [TestMethod]
+        public void ShouldRemoveASheet()
+        {
+            using (var rs = GetType().Assembly.GetManifestResourceStream("CcExcel.Test.Resources.MultiTabs.xlsx"))
+            using (var ms = new MemoryStream())
+            {
+                rs.CopyTo(ms);
+
+                using (var doc = SpreadsheetDocument.Open(ms, true))
+                {
+                    SpreadsheetHelper.RemoveSheet(doc, "Sheet2");
+
+                    doc.Save();
+                }
+
+                using (var doc = SpreadsheetDocument.Open(ms, false))
+                {
+                    Assert.IsNull(SpreadsheetHelper.GetSheet(doc, "Sheet2"));
+                    Assert.IsNull(SpreadsheetHelper.GetSheetData(doc, "Sheet2"));
                 }
 
                 DumpGeneratedExcelFiles.Dump(ms);
