@@ -74,10 +74,6 @@ namespace CcExcel
             get { return _sheetStyleTable ?? (_sheetStyleTable = new SheetStyleTable(this)); }
         }
 
-        public void Remove()
-        {
-        }
-
         #endregion
     }
 }

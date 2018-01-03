@@ -255,30 +255,5 @@ namespace CcExcel.Test
                 DumpGeneratedExcelFiles.Dump(ms);
             }
         }
-
-        [TestMethod]
-        public void ShouldRemoveASheet()
-        {
-            using (var rs = GetType().Assembly.GetManifestResourceStream("CcExcel.Test.Resources.MultiTabs.xlsx"))
-            using (var ms = new MemoryStream())
-            {
-                rs.CopyTo(ms);
-
-                using (var doc = SpreadsheetDocument.Open(ms, true))
-                {
-                    SpreadsheetHelper.RemoveSheet(doc, "Sheet2");
-
-                    doc.Save();
-                }
-
-                using (var doc = SpreadsheetDocument.Open(ms, false))
-                {
-                    Assert.IsNull(SpreadsheetHelper.GetSheet(doc, "Sheet2"));
-                    Assert.IsNull(SpreadsheetHelper.GetSheetData(doc, "Sheet2"));
-                }
-
-                DumpGeneratedExcelFiles.Dump(ms);
-            }
-        }
     }
 }

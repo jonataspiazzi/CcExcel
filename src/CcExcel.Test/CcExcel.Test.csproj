@@ -59,7 +59,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExcelSheetTest.cs" />
     <Compile Include="ExcelStylesTest.cs" />
     <Compile Include="ExcelValuesTest.cs" />
     <Compile Include="DumpGeneratedExcelFiles.cs" />
