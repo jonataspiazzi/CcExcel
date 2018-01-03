@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("CcExcel")]
-[assembly: AssemblyDescription("Provides easy access to manage excel files.")]
+[assembly: AssemblyDescription("Allow create, read and edit Excel spreadsheets with very short and clean code.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("CcExcel")]

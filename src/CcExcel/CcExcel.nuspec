@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Jonatas Piazzi</authors>
+    <owners>Jonatas Piazzi</owners>
+    <licenseUrl>https://github.com/jonataspiazzi/CcExcel/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/jonataspiazzi/CcExcel</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Allow create, read and edit Excel spreadsheets with very short and clean code.</description>
+    <releaseNotes>First deploy of CcExcel.</releaseNotes>
+    <copyright>Copyright ©Jônatas Piazzi, 2017</copyright>
+    <tags>OpenXML DocumentFormat.OpenXML Excel CleanCode</tags>
+  </metadata>
+</package>
