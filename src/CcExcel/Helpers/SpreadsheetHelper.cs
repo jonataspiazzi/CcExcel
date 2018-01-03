@@ -322,5 +322,99 @@ namespace CcExcel.Helpers
             cell.DataType = type != null ? new EnumValue<CellValues>(type.Value) : null;
             cell.CellValue = new CellValue(value);
         }
+
+        public static void RemoveSheet(SpreadsheetDocument document, string sheetToDelete)
+        {
+            // from: https://blogs.msdn.microsoft.com/vsod/2010/02/05/how-to-delete-a-worksheet-from-excel-using-open-xml-sdk-2-0/
+
+            // Diferences
+            // [Content_Types].xml/Types/
+            // docProps\app.xml/Properties/HeadingPairs/vector/variant/i4
+            // docProps\app.xml/Properties/TitlesOfParts/vector/:size
+            // docProps\app.xml/Properties/TitlesOfParts/vector/lpstr
+            // xl\_rels\workbook.xml.rels/Relationships/
+            // xl\worksheets\
+            // xl\workbook.xml/workbook/sheets/
+
+            string Sheetid = "";
+            //Open the workbook
+            WorkbookPart wbPart = document.WorkbookPart;
+
+            // Get the pivot Table Parts
+            var pvtTableCacheParts = wbPart.PivotTableCacheDefinitionParts;
+            var pvtTableCacheDefinationPart = new Dictionary<PivotTableCacheDefinitionPart, string>();
+            foreach (var item in pvtTableCacheParts)
+            {
+                var pvtCacheDef = item.PivotCacheDefinition;
+                //Check if this CacheSource is linked to SheetToDelete
+                var pvtCahce = pvtCacheDef.Descendants<CacheSource>().Where(s => s.WorksheetSource.Sheet == sheetToDelete);
+                if (pvtCahce.Count() > 0)
+                {
+                    pvtTableCacheDefinationPart.Add(item, item.ToString());
+                }
+            }
+            foreach (var Item in pvtTableCacheDefinationPart)
+            {
+                wbPart.DeletePart(Item.Key);
+            }
+            //Get the SheetToDelete from workbook.xml
+            var theSheet = wbPart.Workbook.Descendants<Spreadsheet.Sheet>().Where(s => s.Name == sheetToDelete).FirstOrDefault();
+            if (theSheet == null)
+            {
+                // The specified sheet doesn't exist.
+            }
+            //Store the SheetID for the reference
+            Sheetid = theSheet.SheetId;
+
+            // Remove the sheet reference from the workbook.
+            var worksheetPart = (WorksheetPart)(wbPart.GetPartById(theSheet.Id));
+            theSheet.Remove();
+
+            // Delete the worksheet part.
+            wbPart.DeletePart(worksheetPart);
+
+            //Get the DefinedNames
+            var definedNames = wbPart.Workbook.Descendants<DefinedNames>().FirstOrDefault();
+            if (definedNames != null)
+            {
+                var defNamesToDelete = new List<DefinedName>();
+
+                foreach (DefinedName item in definedNames)
+                {
+                    // This condition checks to delete only those names which are part of Sheet in question
+                    if (item.Text.Contains(sheetToDelete + "!"))
+                        defNamesToDelete.Add(item);
+                }
+
+                foreach (DefinedName item in defNamesToDelete)
+                {
+                    item.Remove();
+                }
+            }
+            // Get the CalculationChainPart 
+            //Note: An instance of this part type contains an ordered set of references to all cells in all worksheets in the 
+            //workbook whose value is calculated from any formula
+
+            var calChainPart = wbPart.CalculationChainPart;
+            if (calChainPart != null)
+            {
+                var calChainEntries = calChainPart.CalculationChain.Descendants<CalculationCell>().Where(c => c.SheetId == Sheetid);
+                var calcsToDelete = new List<CalculationCell>();
+                foreach (var item in calChainEntries)
+                {
+                    calcsToDelete.Add(item);
+                }
+
+                foreach (var item in calcsToDelete)
+                {
+                    item.Remove();
+                }
+
+                if (calChainPart.CalculationChain.Count() == 0)
+                {
+                    wbPart.DeletePart(calChainPart);
+                }
+            }
+        }
     }
 }
